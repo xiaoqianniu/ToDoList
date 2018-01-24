@@ -12,6 +12,11 @@ import CoreData
 class TodoListViewController: UITableViewController{
     
 var itemArray = [Item]()
+var selectedCategory : Category?{
+        didSet{
+            loadItems()
+    }
+    }
 
 let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -21,7 +26,7 @@ let context = (UIApplication.shared.delegate as! AppDelegate).persistentContaine
     print(FileManager.default.urls(for: .documentDirectory,in: .userDomainMask))
         
         
-        loadItems()
+      
 
     }
 
@@ -67,6 +72,7 @@ let context = (UIApplication.shared.delegate as! AppDelegate).persistentContaine
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
+        newItem.parentCategory = self.selectedCategory
             self.itemArray.append(newItem)
             self.saveItems()
            
