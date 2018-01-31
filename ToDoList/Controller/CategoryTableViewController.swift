@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 
 class CategoryTableViewController: SwipeTableViewController{
@@ -17,7 +18,8 @@ class CategoryTableViewController: SwipeTableViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+tableView.separatorStyle = .none
     
        loadCategory()
         
@@ -35,6 +37,8 @@ class CategoryTableViewController: SwipeTableViewController{
         
         cell.textLabel?.text = categoryArray?[indexPath.row].name ?? "No new categories yet"
         
+        cell.backgroundColor = UIColor(hexString:categoryArray? [indexPath.row].colour ?? "FF9300")
+        
         return cell
     }
 
@@ -48,6 +52,7 @@ class CategoryTableViewController: SwipeTableViewController{
       //what will happen after the users click the button
         let categoryName = Category()
         categoryName.name = textfield.text!
+        categoryName.colour = UIColor.randomFlat.hexValue()
         
         self.save(category: categoryName)
     }
