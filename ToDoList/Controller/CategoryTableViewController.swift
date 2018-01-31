@@ -34,10 +34,12 @@ tableView.separatorStyle = .none
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        guard let category = categoryArray?[indexPath.row] else{fatalError()}
+        cell.textLabel?.text = category.name
+        guard let categoryColour = UIColor(hexString:category.colour) else{fatalError()}
+        cell.backgroundColor = categoryColour
+        cell.textLabel?.textColor = ContrastColorOf(categoryColour, returnFlat: true)
         
-        cell.textLabel?.text = categoryArray?[indexPath.row].name ?? "No new categories yet"
-        
-        cell.backgroundColor = UIColor(hexString:categoryArray? [indexPath.row].colour ?? "FF9300")
         
         return cell
     }

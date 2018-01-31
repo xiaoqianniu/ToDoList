@@ -14,7 +14,8 @@ class TodoListViewController: SwipeTableViewController{
   let realm = try! Realm()
   var toDoItems:Results<Item>?
     
-  var selectedCategory : Category?{
+    @IBOutlet weak var searchBar: UISearchBar!
+    var selectedCategory : Category?{
         didSet{
             loadItems()
     }
@@ -27,13 +28,58 @@ class TodoListViewController: SwipeTableViewController{
         
       
         
-    print(FileManager.default.urls(for: .documentDirectory,in: .userDomainMask))
+//   print(FileManager.default.urls(for: .documentDirectory,in: .userDomainMask))
         
       tableView.separatorStyle = .none
       
 
     }
-
+// changing navBar colour
+    override func viewDidAppear(_ animated: Bool) {
+        
+         title = selectedCategory!.name
+        
+        guard let colourHex = selectedCategory?.colour else{fatalError()}
+        
+        updateNavBar(withHexCode: colourHex)
+            
+//            guard let navBar = navigationController?.navigationBar else{fatalError("Navigation Controller does not exist.")}
+//
+//        guard let navBarColour = UIColor(hexString : colourHex)else{fatalError()}
+//
+//                navBar.barTintColor = navBarColour
+//                navBar.tintColor = ContrastColorOf(navBarColour, returnFlat: true)
+//                searchBar.barTintColor = navBarColour
+//                navBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(navBarColour, returnFlat: true)]
+        
+    }
+    
+    
+ override func viewWillDisappear(_ animated: Bool) {
+    
+    updateNavBar(withHexCode: "FF9300")
+    
+//    guard let originalColour = UIColor(hexString : "FF9300")else{fatalError()}
+//    navigationController?.navigationBar.barTintColor = originalColour
+//    navigationController?.navigationBar.tintColor = FlatWhite()
+//    navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(originalColour, returnFlat: true)]
+    }
+    
+//     update nav bar things
+    func updateNavBar(withHexCode colourHexCode:String){
+        
+        guard let navBar = navigationController?.navigationBar else{fatalError("Navigation Controller does not exist.")}
+        
+        guard let navBarColour = UIColor(hexString : colourHexCode)else{fatalError()}
+        
+        navBar.barTintColor = navBarColour
+        navBar.tintColor = ContrastColorOf(navBarColour, returnFlat: true)
+        searchBar.barTintColor = navBarColour
+        navBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(navBarColour, returnFlat: true)]
+       
+    }
+    
+    
     // MARK:tableview datasource methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
